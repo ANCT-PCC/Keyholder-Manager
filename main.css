@@ -1,0 +1,52 @@
+.font-size-header {
+    font-size: 70px;
+}
+
+.font-size-column {
+    font-size: 40px;
+}
+
+.hr {
+    height: 6px;
+    width: auto;
+    background-color: #000000;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.container {
+    height: 70%;
+    margin: 0;
+}
+
+.left-side {
+    flex: 1;
+    padding: 5px;
+    width: 50%;
+}
+
+.right-side {
+    flex: 1;
+    padding: 5px;
+    width: 50%;
+}
+
+.vertical-line {
+    width: 6px;
+    background-color: #000000;
+}
+
+.creating-keyholder {
+    background-color: rgb(154, 154, 244);
+    font-weight: bold;
+}
+
+.complete-keyholder {
+    background-color: rgb(251, 159, 125);
+    font-weight: bold;
+}
