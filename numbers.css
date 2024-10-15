@@ -1,0 +1,19 @@
+div.fwrapp {
+    margin: 20px 10px;
+    width:  auto;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+div.fwrapp div {
+    width: 150px;
+    height: 85px;
+    color: #000000;
+    font-size: 40px;
+    text-align: center;
+    padding-top: 10px;
+}
+
+div.justify3 { 
+    justify-content: center; 
+}
