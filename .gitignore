@@ -33,3 +33,4 @@ coverage/
 # Ignore temporary files
 *.tmp
 *.swp
+.venv
