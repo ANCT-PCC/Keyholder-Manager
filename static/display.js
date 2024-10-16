@@ -42,12 +42,12 @@ const init=()=>{
             ing_element_c[j] = document.createElement('div');//子要素
             ing_element_c[j].id = ing_childElement;
             ing_element_c[j].className = "number_element";
-            //ing_element_c[j].textContent = "1234";
+            ing_element_c[j].textContent = "0901A";
             document.getElementById(ing_parentElement).appendChild(ing_element_c[j]);
             comp_element_c[j] = document.createElement('div');//子要素
             comp_element_c[j].id = comp_childElement;
             comp_element_c[j].className = "number_element";
-            //comp_element_c[j].textContent = "4321";
+            comp_element_c[j].textContent = "0901AR";
             document.getElementById(comp_parentElement).appendChild(comp_element_c[j]);
         }
     }

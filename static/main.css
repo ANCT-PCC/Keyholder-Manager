@@ -89,3 +89,7 @@ div.number_element{
     border: none;
     background-color: #ffffff;
 }
+p.text-bold{
+    font-weight: bold;
+    font-size: 40px;
+}
