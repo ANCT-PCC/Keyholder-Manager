@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fixed Columns and Rows Table</title>
+<style>
+    #wrapper {
+        max-height: 100px; /* テーブルの高さを制限*/
+        max-width: 50vw; /*テーブルの高さを制限  */
+        overflow-y: auto; /* スクロールを有効にする */
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    th {
+        background-color: lavenderblush; /* ヘッダーの背景色を設定 */
+        position: sticky;
+        top: 0;
+        z-index: 2;
+    }
+    th.vertical-header {
+        position: sticky;
+        left: 0;
+        z-index: 1;
+    }
+    th.special-header {
+        background-color: lavenderblush; 
+        top: 0;
+        left: 0;
+        z-index: 3;
+        position: sticky;
+    }
+
+</style>
+</head>
+<body>
+
+<div id="wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th class="special-header">cell_01-01</th> <!-- 縦ヘッダー -->
+                <th>cell_01-02</th>
+                <th>cell_01-03</th>
+                <th>cell_01-04</th>
+                <th>cell_01-05</th>
+                <th>cell_01-06</th>
+                <th>cell_01-07</th>
+                <th>cell_01-08</th>
+                <th>cell_01-09</th>
+                <th>cell_01-10</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 表のデータ -->
+            <tr>
+                <th class="vertical-header">cell_02-01</th> <!-- 縦ヘッダー -->
+                <td>cell_02-02</td>
+                <td>cell_02-03</td>
+                <td>cell_02-04</td>
+                <td>cell_02-05</td>
+                <td>cell_02-06</td>
+                <td>cell_02-07</td>
+                <td>cell_02-08</td>
+                <td>cell_02-09</td>
+                <td>cell_02-10</td>
+            </tr>
+
+            <tr>
+                <th class="vertical-header">cell_03-01</th> <!-- 縦ヘッダー -->
+                <td>cell_03-02</td>
+                <td>cell_03-03</td>
+                <td>cell_03-04</td>
+                <td>cell_03-05</td>
+                <td>cell_03-06</td>
+                <td>cell_03-07</td>
+                <td>cell_03-08</td>
+                <td>cell_03-09</td>
+                <td>cell_03-10</td>
+            </tr>
+
+            <tr>
+                <th class="vertical-header">cell_04-01</th> <!-- 縦ヘッダー -->
+                <td>cell_04-02</td>
+                <td>cell_04-03</td>
+                <td>cell_04-04</td>
+                <td>cell_04-05</td>
+                <td>cell_04-06</td>
+                <td>cell_04-07</td>
+                <td>cell_04-08</td>
+                <td>cell_04-09</td>
+                <td>cell_04-10</td>
+            </tr>
+
+            <tr>
+                <th class="vertical-header">cell_05-01</th> <!-- 縦ヘッダー -->
+                <td>cell_05-02</td>
+                <td>cell_05-03</td>
+                <td>cell_05-04</td>
+                <td>cell_05-05</td>
+                <td>cell_05-06</td>
+                <td>cell_05-07</td>
+                <td>cell_05-08</td>
+                <td>cell_05-09</td>
+                <td>cell_05-10</td>
+            </tr>
+
+            <tr>
+                <th class="vertical-header">cell_06-01</th> <!-- 縦ヘッダー -->
+                <td>cell_06-02</td>
+                <td>cell_06-03</td>
+                <td>cell_06-04</td>
+                <td>cell_06-05</td>
+                <td>cell_06-06</td>
+                <td>cell_06-07</td>
+                <td>cell_06-08</td>
+                <td>cell_06-09</td>
+                <td>cell_06-10</td>
+            </tr>
+
+            <tr>
+                <th class="vertical-header">cell_07-01</th> <!-- 縦ヘッダー -->
+                <td>cell_07-02</td>
+                <td>cell_07-03</td>
+                <td>cell_07-04</td>
+                <td>cell_07-05</td>
+                <td>cell_07-06</td>
+                <td>cell_07-07</td>
+                <td>cell_07-08</td>
+                <td>cell_07-09</td>
+                <td>cell_07-10</td>
+            </tr>
+
+            <tr>
+                <th class="vertical-header">cell_08-01</th> <!-- 縦ヘッダー -->
+                <td>cell_08-02</td>
+                <td>cell_08-03</td>
+                <td>cell_08-04</td>
+                <td>cell_08-05</td>
+                <td>cell_08-06</td>
+                <td>cell_08-07</td>
+                <td>cell_08-08</td>
+                <td>cell_08-09</td>
+                <td>cell_08-10</td>
+            </tr>
+
+            <tr>
+                <th class="vertical-header">cell_09-01</th> <!-- 縦ヘッダー -->
+                <td>cell_09-02</td>
+                <td>cell_09-03</td>
+                <td>cell_09-04</td>
+                <td>cell_09-05</td>
+                <td>cell_09-06</td>
+                <td>cell_09-07</td>
+                <td>cell_09-08</td>
+                <td>cell_09-09</td>
+                <td>cell_09-10</td>
+            </tr>
+
+            <tr>
+                <th class="vertical-header">cell_10-01</th> <!-- 縦ヘッダー -->
+                <td>cell_10-02</td>
+                <td>cell_10-03</td>
+                <td>cell_10-04</td>
+                <td>cell_10-05</td>
+                <td>cell_10-06</td>
+                <td>cell_10-07</td>
+                <td>cell_10-08</td>
+                <td>cell_10-09</td>
+                <td>cell_10-10</td>
+            </tr>
+            <!-- 他の行も同様に記述 -->
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

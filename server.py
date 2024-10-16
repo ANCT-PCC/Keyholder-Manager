@@ -9,11 +9,11 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 
 @app.route('/')
 def hello():
-    return 'Hello, World!'
+    return render_template('main.html')
 
 @app.route('/display')
 def display():
     return render_template('display.html')
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app,debug=True)
