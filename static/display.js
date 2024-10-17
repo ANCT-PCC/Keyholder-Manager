@@ -14,7 +14,7 @@ var comp_parentElement=null;
 var comp_childElement = null;
 
 //Websocket接続
-const connection = io.connect();
+const connection = io.connect('/display');
 
 //呼び出し番号の初期配置
 const init=()=>{
@@ -42,12 +42,12 @@ const init=()=>{
             ing_element_c[j] = document.createElement('div');//子要素
             ing_element_c[j].id = ing_childElement;
             ing_element_c[j].className = "number_element";
-            ing_element_c[j].textContent = "0901A";
+            //ing_element_c[j].textContent = "0901A";
             document.getElementById(ing_parentElement).appendChild(ing_element_c[j]);
             comp_element_c[j] = document.createElement('div');//子要素
             comp_element_c[j].id = comp_childElement;
             comp_element_c[j].className = "number_element";
-            comp_element_c[j].textContent = "0901AR";
+            //comp_element_c[j].textContent = "0901AR";
             document.getElementById(comp_parentElement).appendChild(comp_element_c[j]);
         }
     }
@@ -60,8 +60,9 @@ connection.on('disconnect',()=>{
     console.log("サーバから切断されました");
 });
 
-connection.on('message',()=>{
+connection.on('message',(message)=>{
     console.log("メッセージイベントを受信");
+    
 });
 
 init();
