@@ -107,7 +107,7 @@ connection.on('message',(message)=>{
         //伝票番号から自動放送を組み立てる
         //↑まあ、いいや。とりあえずリロード
         init();
-        announce(message['receipt_id']);
+        //announce(message['receipt_id']);
     }else if(message['action'] == 'confirm'){
         //location.reload();
         init();

@@ -25,6 +25,10 @@ var action_call = null;
 //各種定数
 const table_element = document.getElementById('task');
 
+document.getElementById('openwindow').addEventListener('click', () => {
+    window.open('http://localhost:5000/display');
+});
+
 
 document.getElementById('add_task').addEventListener('click', () => {
     //const receipt_id = document.getElementById('receipt_id').value;//伝票番号はサーバ側で生成しよう
