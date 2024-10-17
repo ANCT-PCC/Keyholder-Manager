@@ -34,3 +34,4 @@ coverage/
 *.tmp
 *.swp
 .venv
+__pychache__
