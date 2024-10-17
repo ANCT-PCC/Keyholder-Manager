@@ -34,4 +34,6 @@ coverage/
 *.tmp
 *.swp
 .venv
-__pychache__
+__pycache__
+keyholder.db
+denpyo_state.json
