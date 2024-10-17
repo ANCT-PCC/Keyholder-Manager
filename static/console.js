@@ -50,6 +50,9 @@ connection.on('connect', () => {
         var data_json = JSON.parse(data_stringify);
         var info = data_json['data'];
         for(var i=0;i<info.length;i++){
+            if(info[i][4] == 'True'){
+                continue;
+            }
             console.log('add');
             receipt_id = info[i][0];
             data_tr = document.createElement('tr');
@@ -74,16 +77,25 @@ connection.on('connect', () => {
             action_complete.id = 'action_complete_'+receipt_id;
             action_complete.className = 'btn btn-primary';
             action_complete.textContent = '完成した';
+            if(info[i][3] == 'True'){
+                action_complete.disabled = true;
+            }
             action_confirm = document.createElement('button');
-            action_confirm.id = 'action_complete_'+receipt_id;
+            action_confirm.id = 'action_confirm_'+receipt_id;
             action_confirm.className = 'btn btn-success';
             action_confirm.textContent = '絵柄を確認した';
+            if(info[i][3] == 'False'){
+                action_confirm.disabled = true;
+            }
             action_retry = document.createElement('button');
-            action_retry.id = 'action_complete_'+receipt_id;
+            action_retry.id = 'action_retry_'+receipt_id;
             action_retry.className = 'btn btn-danger';
             action_retry.textContent = '作りなおす';
+            if(info[i][3] == 'False'){
+                action_retry.disabled = true;
+            }
             action_delete = document.createElement('button');
-            action_delete.id = 'action_complete_'+receipt_id;
+            action_delete.id = 'action_delete_'+receipt_id;
             action_delete.className = 'btn btn-secondary';
             action_delete.textContent = '注文取消';
             data_actions.appendChild(action_complete);
@@ -92,43 +104,52 @@ connection.on('connect', () => {
             data_actions.appendChild(action_delete);
             action_complete.addEventListener('click',(e)=>{
                 console.log("完成した");
+                console.log(e.target.id.slice(-5));
+                e.target.disable = true;
+                document.getElementById('action_confirm_'+e.target.id.slice(-5)).disabled = false;
+                document.getElementById('action_retry_'+e.target.id.slice(-5)).disabled = false;
                 data = {
                     action: 'complete',
-                    receipt_id: e.id.slice(-5),
+                    receipt_id: e.target.id.slice(-5),
                     front: null,
                     back: null
                 }
                 connection.emit('message',data)
+                location.reload();
             });
-            action_confirm.addEventListener('click',()=>{
+            action_confirm.addEventListener('click',(e)=>{
                 console.log("絵柄を確認した");
                 data = {
                     action: 'confirm',
-                    receipt_id: e.id.slice(-5),
+                    receipt_id: e.target.id.slice(-5),
                     front: null,
                     back: null
                 }
                 connection.emit('message',data)
+                location.reload();
             });
-            action_retry.addEventListener('click',()=>{
+            action_retry.addEventListener('click',(e)=>{
                 console.log("作り直す");
+                console.log(document.getElementById('data_frontnum_'+e.target.id.slice(-5)));
                 data = {
                     action: 'retry',
-                    receipt_id: e.id.slice(-5),
-                    front: document.getElementById('data_frontnum_'+e.id.slice(-5)),
-                    back: document.getElementById('data_backnum_'+e.id.slice(-5))
+                    receipt_id: e.target.id.slice(-5),
+                    front: document.getElementById('data_frontnum_'+e.target.id.slice(-5)).innerHTML,
+                    back: document.getElementById('data_backnum_'+e.target.id.slice(-5)).innerHTML
                 }
                 connection.emit('message',data)
+                location.reload();
             });
-            action_delete.addEventListener('click',()=>{
+            action_delete.addEventListener('click',(e)=>{
                 console.log("注文取り消し");
                 data = {
                     action: 'delete',
-                    receipt_id: e.id.slice(-5),
+                    receipt_id: e.target.id.slice(-5),
                     front: null,
                     back: null
                 }
                 connection.emit('message',data)
+                location.reload();
             });
         }
     })
@@ -175,15 +196,17 @@ connection.on('message', (message) => {
             action_complete.className = 'btn btn-primary';
             action_complete.textContent = '完成した';
             action_confirm = document.createElement('button');
-            action_confirm.id = 'action_complete_'+receipt_id;
+            action_confirm.id = 'action_confirm_'+receipt_id;
             action_confirm.className = 'btn btn-success';
             action_confirm.textContent = '絵柄を確認した';
+            action_confirm.disabled = true;
             action_retry = document.createElement('button');
-            action_retry.id = 'action_complete_'+receipt_id;
+            action_retry.id = 'action_retry_'+receipt_id;
             action_retry.className = 'btn btn-danger';
             action_retry.textContent = '作りなおす';
+            action_retry.disabled = true;
             action_delete = document.createElement('button');
-            action_delete.id = 'action_complete_'+receipt_id;
+            action_delete.id = 'action_delete_'+receipt_id;
             action_delete.className = 'btn btn-secondary';
             action_delete.textContent = '注文取消';
             data_actions.appendChild(action_complete);
@@ -192,49 +215,59 @@ connection.on('message', (message) => {
             data_actions.appendChild(action_delete);
             action_complete.addEventListener('click',(e)=>{
                 console.log("完成した");
+                e.target.disable = true;
+                console.log('action_confirm_'+e.target.id.slice(-5));
+                document.getElementById('action_confirm_'+e.target.id.slice(-5)).disabled = false;
+                document.getElementById('action_retry_'+e.target.id.slice(-5)).disabled = false;
                 data = {
                     action: 'complete',
-                    receipt_id: e.id.slice(-5),
+                    receipt_id: e.target.id.slice(-5),
                     front: null,
                     back: null
                 }
                 connection.emit('message',data)
+                location.reload();
             });
-            action_confirm.addEventListener('click',()=>{
+            action_confirm.addEventListener('click',(e)=>{
                 console.log("絵柄を確認した");
                 data = {
                     action: 'confirm',
-                    receipt_id: e.id.slice(-5),
+                    receipt_id: e.target.id.slice(-5),
                     front: null,
                     back: null
                 }
                 connection.emit('message',data)
+                location.reload();
             });
-            action_retry.addEventListener('click',()=>{
+            action_retry.addEventListener('click',(e)=>{
                 console.log("作り直す");
+                console.log(document.getElementById('data_frontnum_'+e.target.id.slice(-5)));
                 data = {
                     action: 'retry',
-                    receipt_id: e.id.slice(-5),
-                    front: document.getElementById('data_frontnum_'+e.id.slice(-5)),
-                    back: document.getElementById('data_backnum_'+e.id.slice(-5))
+                    receipt_id: e.target.id.slice(-5),
+                    front: document.getElementById('data_frontnum_'+e.target.id.slice(-5)).innerHTML,
+                    back: document.getElementById('data_backnum_'+e.target.id.slice(-5)).innerHTML
                 }
                 connection.emit('message',data)
+                location.reload();
             });
-            action_delete.addEventListener('click',()=>{
+            action_delete.addEventListener('click',(e)=>{
                 console.log("注文取り消し");
                 data = {
                     action: 'delete',
-                    receipt_id: e.id.slice(-5),
+                    receipt_id: e.target.id.slice(-5),
                     front: null,
                     back: null
                 }
                 connection.emit('message',data)
+                location.reload();
             });
 
             break;
         case 'delete':
             console.log('delete');
             data_tr = document.getElementById('data_tr_'+message['receipt_id']);
+            console.log('data_tr_'+message['receipt_id']);
             table_element.removeChild(data_tr);
             break;
         case 'complete':

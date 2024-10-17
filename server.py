@@ -54,6 +54,28 @@ class DenpyoNumberGenerator:
 def hello():
     return render_template('main.html')
 
+@app.route('/get_creatings')
+def get_creatings():
+    sql=f'''
+        select * from "{dbc.TABLE_NAME}" where is_completed = "False"
+    '''
+    res = dbc.sqlExecute(False,sql)
+    data = {
+        'data': len(res)
+    }
+    return json.dumps(data)
+
+@app.route('/get_confirmings')
+def get_confirmings():
+    sql=f'''
+        select * from "{dbc.TABLE_NAME}" where is_completed = "True" and is_delivered = "False"
+    '''
+    res = dbc.sqlExecute(False,sql)
+    data = {
+        'data': len(res)
+    }
+    return json.dumps(data)
+
 @app.route('/display')
 def display():
     return render_template('display.html')
@@ -133,7 +155,7 @@ def console_message(message):
         dbc.delete_task(message['receipt_id'])
         data = {
             "action": 'delete',
-            "receipt_id": receipt_id,
+            "receipt_id": message['receipt_id'],
             "front": None,
             "back": None
         }
@@ -147,7 +169,7 @@ def console_message(message):
         dbc.complete_task(message['receipt_id'])
         data = {
             "action": 'complete',
-            "receipt_id": receipt_id,
+            "receipt_id": message['receipt_id'],
             "front": None,
             "back": None
         }
@@ -158,10 +180,10 @@ def console_message(message):
     #action==confirm
     #データベースのタスクを確認済みにする
     if message['action'] == 'confirm':
-        dbc.delete_task(message['receipt_id'])
+        dbc.confirm_task(message['receipt_id'])
         data = {
             "action": 'confirm',
-            "receipt_id": receipt_id,
+            "receipt_id": message['receipt_id'],
             "front": None,
             "back": None
         }
@@ -173,13 +195,16 @@ def console_message(message):
     #データベースのタスクを完了にする
     #データベースのタスクを確認済みにする
     if message['action'] == 'retry':
-        dbc.add_task(message['receipt_id']+'R',message['front'],message['back'])
         dbc.delete_task(message['receipt_id'])
+        print(f'表: {message["front"]}')
+        print(f'裏: {message["back"]}')
+        dbc.add_task(str(message['receipt_id']),str(message['front']),str(message['back']))
+        
         data = {
             "action": 'retry',
-            "receipt_id": receipt_id,
-            "front": None,
-            "back": None
+            "receipt_id": message['receipt_id'],
+            "front": message['front'],
+            "back": message['back']
         }
         socketio.emit('message',data,namespace='/console')
         socketio.emit('message',data,namespace='/display')
