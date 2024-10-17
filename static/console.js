@@ -20,6 +20,7 @@ var action_delete = null;
 var action_complete = null;
 var action_confirm = null;
 var action_retry = null;
+var action_call = null;
 
 //各種定数
 const table_element = document.getElementById('task');
@@ -37,9 +38,12 @@ document.getElementById('add_task').addEventListener('click', () => {
     });
 });
 
-
-connection.on('connect', () => {
-    console.log('Connected to server');
+const init = () => {
+    //一度テーブルをリセット
+    while(table_element.firstChild){
+        table_element.removeChild(table_element.firstChild);
+    }
+    
     $.ajax(
         {
           url:'http://localhost:5000/'+'history',
@@ -80,6 +84,13 @@ connection.on('connect', () => {
             if(info[i][3] == 'True'){
                 action_complete.disabled = true;
             }
+            action_call = document.createElement('button');
+            action_call.id = 'action_call_'+receipt_id;
+            action_call.className = 'btn btn-info';
+            action_call.textContent = '呼び出し';
+            if(info[i][3] == 'False'){
+                action_call.disabled = true;
+            }
             action_confirm = document.createElement('button');
             action_confirm.id = 'action_confirm_'+receipt_id;
             action_confirm.className = 'btn btn-success';
@@ -99,15 +110,16 @@ connection.on('connect', () => {
             action_delete.className = 'btn btn-secondary';
             action_delete.textContent = '注文取消';
             data_actions.appendChild(action_complete);
+            data_actions.appendChild(action_call);
             data_actions.appendChild(action_confirm);
             data_actions.appendChild(action_retry);
             data_actions.appendChild(action_delete);
             action_complete.addEventListener('click',(e)=>{
                 console.log("完成した");
-                console.log(e.target.id.slice(-5));
                 e.target.disable = true;
                 document.getElementById('action_confirm_'+e.target.id.slice(-5)).disabled = false;
                 document.getElementById('action_retry_'+e.target.id.slice(-5)).disabled = false;
+                announce(e.target.id.slice(-5));
                 data = {
                     action: 'complete',
                     receipt_id: e.target.id.slice(-5),
@@ -115,8 +127,12 @@ connection.on('connect', () => {
                     back: null
                 }
                 connection.emit('message',data)
-                location.reload();
+                init();
             });
+            action_call.addEventListener('click',(e)=>{
+                console.log("呼び出し");
+                announce(e.target.id.slice(-5));
+            })
             action_confirm.addEventListener('click',(e)=>{
                 console.log("絵柄を確認した");
                 data = {
@@ -130,7 +146,6 @@ connection.on('connect', () => {
             });
             action_retry.addEventListener('click',(e)=>{
                 console.log("作り直す");
-                console.log(document.getElementById('data_frontnum_'+e.target.id.slice(-5)));
                 data = {
                     action: 'retry',
                     receipt_id: e.target.id.slice(-5),
@@ -152,7 +167,13 @@ connection.on('connect', () => {
                 location.reload();
             });
         }
-    })
+    });
+};
+
+
+connection.on('connect', () => {
+    console.log('Connected to server');
+    init();
 });
 connection.on('disconnect', () => {
     console.log('Disconnected from server');
@@ -170,7 +191,6 @@ connection.on('message', (message) => {
     switch (message.action) {
         case 'add':
             console.log('add');
-            console.log(message)
             receipt_id = message['receipt_id'];
             document.getElementById('generated_receipt_id').textContent = receipt_id;
             data_tr = document.createElement('tr');
@@ -195,6 +215,11 @@ connection.on('message', (message) => {
             action_complete.id = 'action_complete_'+receipt_id;
             action_complete.className = 'btn btn-primary';
             action_complete.textContent = '完成した';
+            action_call = document.createElement('button');
+            action_call.id = 'action_call_'+receipt_id;
+            action_call.className = 'btn btn-info';
+            action_call.textContent = '呼び出し';
+            action_call.disabled = true;
             action_confirm = document.createElement('button');
             action_confirm.id = 'action_confirm_'+receipt_id;
             action_confirm.className = 'btn btn-success';
@@ -210,15 +235,16 @@ connection.on('message', (message) => {
             action_delete.className = 'btn btn-secondary';
             action_delete.textContent = '注文取消';
             data_actions.appendChild(action_complete);
+            data_actions.appendChild(action_call);
             data_actions.appendChild(action_confirm);
             data_actions.appendChild(action_retry);
             data_actions.appendChild(action_delete);
             action_complete.addEventListener('click',(e)=>{
                 console.log("完成した");
                 e.target.disable = true;
-                console.log('action_confirm_'+e.target.id.slice(-5));
                 document.getElementById('action_confirm_'+e.target.id.slice(-5)).disabled = false;
                 document.getElementById('action_retry_'+e.target.id.slice(-5)).disabled = false;
+                announce(e.target.id.slice(-5));
                 data = {
                     action: 'complete',
                     receipt_id: e.target.id.slice(-5),
@@ -226,8 +252,12 @@ connection.on('message', (message) => {
                     back: null
                 }
                 connection.emit('message',data)
-                location.reload();
+                init();
             });
+            action_call.addEventListener('click',(e)=>{
+                console.log("呼び出し");
+                announce(e.target.id.slice(-5));
+            })
             action_confirm.addEventListener('click',(e)=>{
                 console.log("絵柄を確認した");
                 data = {
@@ -292,14 +322,3 @@ connection.on('message', (message) => {
             break;
     }
 });
-
-
-
-const init = () => {
-    //データベースから現在のタスクを取得
-};
-
-
-
-
-

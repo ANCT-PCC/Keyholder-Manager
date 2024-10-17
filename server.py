@@ -2,9 +2,9 @@ from flask import Flask,render_template
 from flask_cors import CORS
 from flask_socketio import SocketIO
 import dbc,datetime,string,json,os
-app = Flask(__name__)
-CORS(app)
+app = Flask(__name__, static_folder='.', static_url_path='')
 socketio = SocketIO(app, cors_allowed_origins="*")
+CORS(app)
 
 def init():
     dbc.sqlExecute(True,dbc.INIT_SQL_COMMAND)
@@ -52,7 +52,7 @@ class DenpyoNumberGenerator:
 
 @app.route('/')
 def hello():
-    return render_template('main.html')
+    return app.send_static_file('main.html')
 
 @app.route('/get_creatings')
 def get_creatings():
@@ -78,7 +78,7 @@ def get_confirmings():
 
 @app.route('/display')
 def display():
-    return render_template('display.html')
+    return app.send_static_file('display.html')
 
 @app.route('/history')
 def get_history():
@@ -92,15 +92,9 @@ def get_history():
         }
         return json.dumps(data)
     
-    print(f'伝票番号: {res[0][0]}')
-    print(f'表の番号: {res[0][1]}')
-    print(f'裏の番号: {res[0][2]}')
-    print(f'完成したか: {res[0][3]}')
-    print(f'絵柄を確認したか: {res[0][4]}')
     data = {
         'data': res
     }
-    print(json.dumps(data))
     return json.dumps(data)
 
 @socketio.on('connect',namespace='/console')
@@ -131,7 +125,6 @@ def console_message(message):
     #action==add
     #データベースにタスクを追加
     #伝票番号を生成してconsoleにemit
-    print(f"めっせーじ{message['action']}")
     if message['action'] == 'add':
         ridGen=DenpyoNumberGenerator()
         receipt_id = ridGen.generate_denpyo_number() 
@@ -175,6 +168,7 @@ def console_message(message):
         }
         socketio.emit('message',data,namespace='/console')
         socketio.emit('message',data,namespace='/display')
+        
     #displayに対してcompleteをemit
 
     #action==confirm
@@ -196,8 +190,6 @@ def console_message(message):
     #データベースのタスクを確認済みにする
     if message['action'] == 'retry':
         dbc.delete_task(message['receipt_id'])
-        print(f'表: {message["front"]}')
-        print(f'裏: {message["back"]}')
         dbc.add_task(str(message['receipt_id']),str(message['front']),str(message['back']))
         
         data = {
@@ -214,6 +206,14 @@ def console_message(message):
 def display_message(message):
     print('display:',message)
     #要るかわからんけど一応
+
+#@app.route('/static/sound/<string:filename>')
+#def test(filename):
+#    return app.send_static_file(filename)
+
+#@app.route('/static/sound/announce/mp3/<string:filename>')
+#def test2(filename):
+#    return app.send_static_file(f'/static/sound/announce/mp3/{filename}')
 
 
 if __name__ == '__main__':

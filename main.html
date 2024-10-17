@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>操作画面 キーホルダー管理システム</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="static/console.css">
+    <link rel="stylesheet" href="static/test.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="left-side">
+            <h1 class="mt-5">キーホルダー作成管理</h1>
+            <h2 class="mt-3">作成タスクの追加</h2>
+            <div class="input-group input-group-lg">
+                <span class="input-group-text" id="inputGroup-sizing-lg">表の番号</span>
+                <input id="front" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="半角数字で入力">
+            </div>
+            <br>
+            <div class="input-group input-group-lg">
+                <span class="input-group-text" id="inputGroup-sizing-lg">裏の番号</span>
+                <input id="back" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="半角数字で入力">
+            </div>
+            <div class="d-flex justify-content-center mt-5">
+                <button id="add_task" type="button" class="btn btn-primary">タスクを追加</button>
+            </div>
+            <br>
+            <br>
+            <div class="d-flex justify-content-center">
+                <h1>↓伝票番号↓</h1>
+            </div>
+            <div class="d-flex justify-content-center">
+                <h1 id="generated_receipt_id" class="display-1">----</h1>
+            </div>
+            <div class="d-flex justify-content-center">
+                <p class="text-bold">伝票に記入し、お客様控えを切り離してください。</p>
+            </div>
+        </div>
+
+        <div id="chuoLine" class="vertical-line"></div>
+
+        <div class="right-side scrolltable">
+            <div id="wrapper">
+                <table class="table table-bordered table-hover big-table table-container">
+                    <thead id="theadelement">
+                        <tr>
+                            <th class="special-header">伝票番号</th>
+                            <th>表の番号</th>
+                            <th>裏の番号</th>
+                            <th>操作ボタン</th>
+                        </tr>
+                    </thead>
+                    <tbody id="task">
+                        
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="static/announce.js"></script>
+<script src="static/console.js"></script>
+
+</html>

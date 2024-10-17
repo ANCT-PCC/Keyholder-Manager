@@ -59,7 +59,6 @@ connection.on('connect',()=>{
                                 var data_stringify = JSON.stringify(data);
                                 var data_json = JSON.parse(data_stringify);
                                 var info = data_json['data'];
-                                console.log(info);
                                 document.getElementById('creating_panel_36').innerHTML = '他'+String(info-35)+'件';
                             });
                             
@@ -88,7 +87,6 @@ connection.on('connect',()=>{
                                 var data_stringify = JSON.stringify(data);
                                 var data_json = JSON.parse(data_stringify);
                                 var info = data_json['data'];
-                                console.log(info);
                                 document.getElementById('completed_panel_36').innerHTML = '他'+String(info-35)+'件';
                             });
                         }
@@ -105,11 +103,11 @@ connection.on('disconnect',()=>{
 
 connection.on('message',(message)=>{
     console.log("メッセージイベントを受信");
-    console.log(message);
-    console.log(message['action']);
     if(message['action'] == 'complete'){
         //伝票番号から自動放送を組み立てる
+        //↑まあ、いいや。とりあえずリロード
         init();
+        announce(message['receipt_id']);
     }else if(message['action'] == 'confirm'){
         //location.reload();
         init();
@@ -148,8 +146,6 @@ connection.on('message',(message)=>{
                                 var data_stringify = JSON.stringify(data);
                                 var data_json = JSON.parse(data_stringify);
                                 var info = data_json['data'];
-                                console.log(info);
-                                console.log(document.getElementById('creating_panel_'+String(j)));
                                 document.getElementById('creating_panel_36').innerHTML = '他'+String(info-35)+'件';
                             });
                         }
@@ -177,7 +173,6 @@ connection.on('message',(message)=>{
                                 var data_stringify = JSON.stringify(data);
                                 var data_json = JSON.parse(data_stringify);
                                 var info = data_json['data'];
-                                console.log(info);
                                 document.getElementById('completed_panel_36').innerHTML = '他'+String(info-35)+'件';
                             });
                         }
