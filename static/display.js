@@ -13,6 +13,9 @@ var comp_element_c = [];
 var comp_parentElement=null;
 var comp_childElement = null;
 
+//その他の変数
+//var element
+
 //Websocket接続
 const connection = io.connect('/display');
 
@@ -62,7 +65,14 @@ connection.on('disconnect',()=>{
 
 connection.on('message',(message)=>{
     console.log("メッセージイベントを受信");
-    
+    console.log(message);
+    console.log(message.length);
+    for(i=0;i<36;i++){
+        element = document.getElementById('').textContent == ''
+        if(true){
+            continue;
+        }
+    }
 });
 
 init();
