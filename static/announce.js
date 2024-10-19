@@ -14,7 +14,7 @@ function announce(receipt_id) {
     var sound5 = new Audio();
     var end_sound = new Audio();
 
-    call_sound.src = 'static/sound/call.mp3';
+    call_sound.src = 'static/sound/call_03.mp3';
     number_sound.src = 'static/sound/announce/mp3/number.mp3';
     sound1.src = 'static/sound/announce/mp3/'+id_letters[0]+'.mp3';
     sound2.src = 'static/sound/announce/mp3/'+id_letters[1]+'.mp3';
