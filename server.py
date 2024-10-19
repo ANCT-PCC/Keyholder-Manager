@@ -13,6 +13,7 @@ def init():
 class DenpyoNumberGenerator:
     def __init__(self, state_file='denpyo_state.json'):
         self.state_file = state_file
+        self.current_hour = '00'
         self.current_number = 1
         self.current_letter_index = 0
         self.letters = string.ascii_uppercase
@@ -22,11 +23,13 @@ class DenpyoNumberGenerator:
         if os.path.exists(self.state_file):
             with open(self.state_file, 'r') as file:
                 state = json.load(file)
+                self.current_hour = state.get('current_hour', "00")
                 self.current_number = state.get('current_number', 1)
                 self.current_letter_index = state.get('current_letter_index', 0)
 
     def save_state(self):
         state = {
+            'current_hour': self.current_hour,
             'current_number': self.current_number,
             'current_letter_index': self.current_letter_index
         }
@@ -35,7 +38,14 @@ class DenpyoNumberGenerator:
 
     def generate_denpyo_number(self):
         now = datetime.datetime.now()
-        hour = now.strftime('%H')
+        now_hour = now.strftime('%H') #現在の時間を取得
+        hour = f'{self.current_hour:02s}' #前回の時間を取得
+        if now_hour != hour:
+            print('hour changed')
+            print(f'now_hour: {now_hour}, hour: {hour}')
+            self.current_hour = hour = now_hour #時間が変わったら時間を更新
+            self.current_number = 1
+            self.current_letter_index = 0
         number = f'{self.current_number:02d}'
         letter = self.letters[self.current_letter_index]
 
@@ -96,6 +106,19 @@ def get_history():
         'data': res
     }
     return json.dumps(data)
+
+@app.route('/fixnumbers')
+def fix_numbers():
+    sql=f'''
+        select * from "{dbc.TABLE_NAME}"
+    '''
+    res = dbc.sqlExecute(False,sql)
+    for i in range(len(res)):
+        sql=f'''
+            update "{dbc.TABLE_NAME}" set receipt_id = "{i+1}" where receipt_id = "{res[i][0]}"
+        '''
+        dbc.sqlExecute(True,sql)
+    return 'fixed'
 
 @socketio.on('connect',namespace='/console')
 def console_connect():
